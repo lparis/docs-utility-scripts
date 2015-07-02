@@ -12,6 +12,9 @@ if repo_keywords == [] or repo_keywords[0].gsub(' ','') == ''
 	repo_keywords << [' ']
 end
 
+puts "here are your repo keywords:"
+repo_keywords.each { |k| p "keyword: #{k}" }
+
 config_yml = './config.yml'
 config_yml = File.read(config_yml)
 config_yml.gsub!(/(- repo|public_host)/, "$$$\n\\1")
@@ -19,7 +22,12 @@ config_yml.gsub!(/(- repo|public_host)/, "$$$\n\\1")
 config_yml.gsub!('###', '')
 repo_regex = /- repository.*?\$\$\$/m
 
+
 repos = config_yml.scan repo_regex
+
+# repos.each_with_index do |repo,i|
+# 	puts "***\nrepo number #{i}: \n#{repo}\n%%%\n\n"
+# end
 
 repos.each_with_index do |repo,i|
 
@@ -36,6 +44,5 @@ repos.each_with_index do |repo,i|
 	config_yml = config_yml.sub(orig_repo, repo)
 
 end
-
 config_yml.gsub!(/\n\$\$\$/,'')
 File.open('./config.yml', "w") { |file| file << config_yml }
