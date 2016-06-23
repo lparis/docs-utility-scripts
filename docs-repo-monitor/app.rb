@@ -2,6 +2,19 @@ require 'sinatra'
 require 'json'
 require 'octokit'
 
+# As a writer I want to be reminded to check and see if docs-identity (SSO) PRs include content that needs to be cherry picked to the Master PWS branch.
+# I want to be reminded through a comment on the PR. 
+
+post '/cherry_pick_checker' do
+  client = Octokit::Client.new :access_token => ENV['git_token']
+  incoming_post = JSON.parse(request.body.read)
+
+# Create a pull request comment reply
+ # @client.create_pull_request_comment_reply("ljarzynski/asdf", 1903950, "Check to see if you need to #cherry-pick this to master-pws")
+create_pull_request_comment_reply("ljarzynski/asdf", pull_id, "test")
+
+end
+
 post '/payload' do
 
   client = Octokit::Client.new :access_token => ENV['git_token']
