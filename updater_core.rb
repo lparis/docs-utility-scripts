@@ -26,6 +26,18 @@ def review_check(repo_list)
 	end	
 end
 
+def create_numbered_branch(repo)
+	# Change the value of branch, below, to create different branches
+	branch = "1.8" 
+	repo = repo.gsub(/\w*-?\w*\//,'')
+	puts "Checking for 1.8 branch"
+	needs_branch? = `cd ~/workspace/#{repo}; git branch -a | grep 1.8`
+	needs_branch? == "" ? needs_branch? = true : needs_branch? = false
+	puts needs_branch? ?  "Creating review branch for #{repo}" : "Branch containing #{branch} already exists"
+	`cd ~/workspace/#{repo}; git branch #{branch}; git push -u origin #{branch}`
+end
+
+
 # creates 'review' branch for every repo
 def create_review_branch(repo)
 	repo = repo.gsub(/\w*-?\w*\//,'')
