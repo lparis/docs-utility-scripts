@@ -5,9 +5,11 @@
 require 'yaml'
 
 # Add new books to this array, as necessary
-@books = ["docs-book-cloudfoundry", "docs-book-pcfservices", "docs-book-pivotalcf", "docs-book-runpivotal"]
+# @books = ["docs-book-cloudfoundry", "docs-book-pcfservices", "docs-book-pivotalcf", "docs-book-runpivotal"]
+@books = ["docs-book-pivotalcf"]
 @modified_repos = []
-@repo_list = ["docs-layout-repo", "docs-book-cloudfoundry", "docs-book-pcfservices", "docs-book-pivotalcf", "docs-book-runpivotal"]
+# @repo_list = ["docs-layout-repo", "docs-book-cloudfoundry", "docs-book-pcfservices", "docs-book-pivotalcf", "docs-book-runpivotal"]
+@repo_list = []
 
 # Create a list of the book repositories to be cloned_or_updated, send them to cloner/updater, and display the ignored modified repos.
 def gather_repos(books)
@@ -22,7 +24,8 @@ end
 
 def review_check(repo_list)
 	repo_list.each do |repo|
-		create_review_branch(repo) if File.directory?(Dir.home + '/workspace/' + repo.gsub(/\w*-?\w*\//,''))
+		create_numbered_branch(repo) if File.directory?(Dir.home + '/workspace/' + repo.gsub(/\w*-?\w*\//,''))
+		# create_review_branch(repo) if File.directory?(Dir.home + '/workspace/' + repo.gsub(/\w*-?\w*\//,''))
 	end	
 end
 
@@ -31,9 +34,9 @@ def create_numbered_branch(repo)
 	branch = "1.8" 
 	repo = repo.gsub(/\w*-?\w*\//,'')
 	puts "Checking for 1.8 branch"
-	needs_branch? = `cd ~/workspace/#{repo}; git branch -a | grep 1.8`
-	needs_branch? == "" ? needs_branch? = true : needs_branch? = false
-	puts needs_branch? ?  "Creating review branch for #{repo}" : "Branch containing #{branch} already exists"
+	needs_branch = `cd ~/workspace/#{repo}; git branch -a | grep 1.8`
+	needs_branch == "" ? needs_branch = true : needs_branch = false
+	puts needs_branch ?  "Creating review branch for #{repo}" : "Branch containing #{branch} already exists"
 	`cd ~/workspace/#{repo}; git branch #{branch}; git push -u origin #{branch}`
 end
 
