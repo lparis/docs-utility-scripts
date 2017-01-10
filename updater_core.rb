@@ -30,8 +30,8 @@ end
 def create_review_branch(repo)
 	repo = repo.gsub(/\w*-?\w*\//,'')
 	puts ""
-	puts "Creating review branch for #{repo}"
-	`cd ~/workspace/#{repo}; git branch review; git push -u origin review`
+	puts "Deleting old and creating new review branch for #{repo}"
+	`cd ~/workspace/#{repo}; git checkout master; git branch -d review; git branch review; git push -u origin review`
 end
 
 gather_repos(@books)
