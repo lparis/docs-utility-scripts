@@ -8,6 +8,7 @@ require_relative 'update-stemcell-rn'
 @current_pcf_version_number = ENV['CURRENT_PCF_VERSION_NUMBER']
 @client = Octokit::Client.new :access_token => ENV['STEMCELL_RN_BOT_GIT_TOKEN']
 @stemcell_json_file = @client.contents('pivotal-cf-experimental/docs-utility-scripts', {:path => 'stemcell-rn-bot/stemcell-releases.json'})
+@bosh_repo_name = ENV['BOSH_REPO_NAME']
 
 def get_stemcells_json
 
@@ -24,7 +25,7 @@ def put_stemcells_json(content)
                  "stemcell-rn-bot/stemcell-releases.json",
                  "Stemcell RN Bot automatically updating stemcell-releases.json",
                  @stemcell_json_file['sha'],
-                 content)
+                 content, :branch => '@current_pcf_version_number')
 end
 
 def get_stemcells_pivnet
@@ -52,7 +53,7 @@ end
 def get_stemcells_github
 
   # instantiate the bosh repo as a repository object
-  bosh_repo = Octokit::Repository.from_url('https://github.com/cloudfoundry/bosh')
+  bosh_repo = Octokit::Repository.from_url(@bosh_repo_name)
 
   # grab the list of releases
   bosh_releases = @client.releases(bosh_repo)
