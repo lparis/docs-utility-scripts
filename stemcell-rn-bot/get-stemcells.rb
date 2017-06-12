@@ -7,7 +7,7 @@ require_relative 'update-stemcell-rn'
 @starting_stemcell_version = ENV['STARTING_STEMCELL_VERSION']
 @current_pcf_version_number = ENV['CURRENT_PCF_VERSION_NUMBER']
 @client = Octokit::Client.new :access_token => ENV['STEMCELL_RN_BOT_GIT_TOKEN']
-@stemcell_json_file = @client.contents('pivotal-cf-experimental/docs-utility-scripts', {:path => 'stemcell-rn-bot/stemcell-releases.json'})
+@stemcell_json_file = @client.contents('pivotal-cf-experimental/docs-utility-scripts', {:path => 'stemcell-rn-bot/stemcell-releases.json', :ref => @current_pcf_version_number})
 @bosh_repo_name = ENV['BOSH_REPO_NAME']
 
 def get_stemcells_json
