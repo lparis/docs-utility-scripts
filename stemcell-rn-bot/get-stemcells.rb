@@ -35,6 +35,8 @@ def get_stemcells_pivnet
   stemcells = JSON.parse(stemcells) 
   stemcells_list = stemcells['releases']
 
+  puts stemcells_list
+
   #put the list of stemcells in order of their version numbers
   sorted_stemcells_list = stemcells_list.sort_by { |h| h['version'] }.reverse
 
