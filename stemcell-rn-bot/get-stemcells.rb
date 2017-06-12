@@ -25,7 +25,7 @@ def put_stemcells_json(content)
                  "stemcell-rn-bot/stemcell-releases.json",
                  "Stemcell RN Bot automatically updating stemcell-releases.json",
                  @stemcell_json_file['sha'],
-                 content, :branch => '@current_pcf_version_number')
+                 content, :branch => @current_pcf_version_number)
 end
 
 def get_stemcells_pivnet
