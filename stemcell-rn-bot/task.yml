@@ -9,4 +9,4 @@ inputs:
 - name: docs-utility-scripts-1-10
 
 run:
-  path: docs-utility-scripts/stemcell-rn-bot/run.sh
+  path: docs-utility-scripts-1-10/stemcell-rn-bot/run.sh
