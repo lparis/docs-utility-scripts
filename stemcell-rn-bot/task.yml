@@ -6,7 +6,7 @@ image_resource:
     repository: pubtools/bookbinder-8.1
 
 inputs:
-- name: docs-utility-scripts-1-11
+- name: docs-utility-scripts-1-12
 
 run:
-  path: docs-utility-scripts-1-11/stemcell-rn-bot/run.sh
+  path: docs-utility-scripts-1-12/stemcell-rn-bot/run.sh

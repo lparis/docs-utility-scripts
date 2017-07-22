@@ -8,7 +8,7 @@ title: Stemcell Release Notes
 Owner: BOSH
 ---
 
-This topic includes release notes for stemcells used with Pivotal Cloud Foundry (PCF) versions 1.11.x.
+This topic includes release notes for stemcells used with Pivotal Cloud Foundry (PCF) versions 1.12.x.
 HEADER
 	
 	JSON.parse(content).each do |f|
