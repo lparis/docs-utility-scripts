@@ -39,7 +39,7 @@ def get_stemcells_pivnet
   sorted_stemcells_list = stemcells_list.sort_by { |h| h['version'] }.reverse
 
   right_stemcells = sorted_stemcells_list.select do |d|
-    d['version'].start_with?("#{@starting_stemcell_version}")
+    d['version'].start_with?("#{@starting_stemcell_version[0..3]}")
   end
 
   stemcells_numbers_list = right_stemcells.map do |r| 
@@ -93,7 +93,6 @@ def get_stemcells_github
   return stemcell_releases.to_json
 
 end
-
 
 # if diffs between new stemcell info and existing stemcell info, then
 # write the new stemcell json and run the script that updates the stemcell releases notes
