@@ -36,11 +36,14 @@ def get_stemcells_pivnet
   stemcells_list = stemcells['releases']
 
   #put the list of stemcells in order of their version numbers
-  sorted_stemcells_list = stemcells_list.sort_by { |h| h['version'] }.reverse
+
+  sorted_stemcells_list = stemcells_list.sort_by { |h| Gem::Version.new(h['version'])}.reverse
 
   right_stemcells = sorted_stemcells_list.select do |d|
     d['version'].start_with?("#{@starting_stemcell_version}")
   end
+
+  puts right_stemcells
 
   stemcells_numbers_list = right_stemcells.map do |r| 
     r['version']
@@ -106,3 +109,4 @@ if new_stemcell_json != old_stemcell_json
   contentcontent = build_new_rn(new_stemcell_json)
   update_rn(contentcontent)
 end
+
