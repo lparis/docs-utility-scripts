@@ -82,7 +82,7 @@ def get_stemcells_github
     end
   end
 
-  stemcell_releases_slice.push(stemcell_releases_full[index_of_starting_stemcell])
+  # stemcell_releases_slice.push(stemcell_releases_full[index_of_starting_stemcell])
 
   # filter only name, date, and body info into new hash
   stemcell_releases = []
@@ -108,4 +108,5 @@ if new_stemcell_json != old_stemcell_json
   contentcontent = build_new_rn(new_stemcell_json)
   update_rn(contentcontent)
 end
+
 
