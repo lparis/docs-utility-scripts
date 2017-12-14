@@ -43,8 +43,6 @@ def get_stemcells_pivnet
     d['version'].start_with?("#{@starting_stemcell_version[0..3]}")
   end
 
-  puts right_stemcells
-
   stemcells_numbers_list = right_stemcells.map do |r| 
     r['version']
   end
