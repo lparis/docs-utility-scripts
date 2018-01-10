@@ -1,1 +1,1 @@
-[[["name","Stemcell 3468.13"],["published_at","2017-12-08 22:22:32 UTC"],["body","- Bump Ubuntu Trusty stemcell USN-3509-2: Linux kernel (Xenial HWE) vulnerabilities"]]]
+[[["name","Stemcell 3468.16"],["published_at","2018-01-10 04:08:43 UTC"],["body","- Bump Ubuntu Trusty stemcells for [USN-3522-2: Linux (Xenial HWE) vulnerability](https://usn.ubuntu.com/usn/usn-3522-2/) (This flaw is known as Meltdown.)"]],[["name","Stemcell 3468.13"],["published_at","2017-12-08 22:22:32 UTC"],["body","- Bump Ubuntu Trusty stemcell USN-3509-2: Linux kernel (Xenial HWE) vulnerabilities"]]]
