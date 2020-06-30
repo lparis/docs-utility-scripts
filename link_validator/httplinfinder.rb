@@ -58,7 +58,36 @@ class HTTPLinkFinder
 	end
 
 	def FindAllLinks(file_content)
+		#The desired code will not be tricked into reporting any instance of http as a link requiring validation.
+		# I think we want to only test the link types that will cause an error:
+		# Links in [Description](Link Content) format
+		# Links in <a href="Link Content">Description</a> format
+		# 
+		# Pattern matching is more complicated if returns and spaces must be accounted for
+		# We could remove all white space before processing content
 
+		file_content_searchable = file_content
+		file_content_searchable.gsub!(/\s/, "")
+		file_content_searchable.gsub!("\n", "")
+		file_content_searchable.gsub!("\r", "")
+
+		link_pattern_a = /<a href="([^\"]*)">[^<]*<\/a>/
+		link_pattern_b = /\[.*\]\(([^\)]*)\)/
+
+		link_pattern_c = /<a href="([^\"]*)">[^<]*<\/a>|\[.*\]\(([^\)]*)\)/
+
+		#links_array_raw = file_content_searchable.scan(link_pattern_c)
+		#links_array = CreateUsableLinksList(links_array_raw)
+		#The scan will return an array of arrays
+		#If the sub arrays match the returns in Rubular the desired content is in different postions
+		#within the sub array depending on if the hit was pattern 1 or pattern 2
+		
+
+		#might as well let ruby do the heavy lifting instead
+		links_array_a = file_content_searchable.scan(link_pattern_a)
+		links_array_b = file_content_searchable.scan(link_pattern_b)
+
+		links_array = links_array_a.concat(links_array_b)
 
 	end
 
