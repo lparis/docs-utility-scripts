@@ -1,6 +1,8 @@
-require_relative 'httplinfinder.rb'
+
+require_relative 'httplinkfinder.rb'
 require_relative 'httplinkvalidator.rb'
 require_relative 'httplinkreplacer.rb'
+require_relative 'topicvalidator.rb'
 
 class TestHarness
 
@@ -30,9 +32,53 @@ class TestHarness
 		#  returns: "expanded path: /Users/olivergraves/temp/findme.txt"
 	end
 
+	def RunTest3
+
+		puts "Creating test content"
+		test_content = "words more words [link desc 1](link text 1) words more words [link desc 2](link text 2).\n\rwords more words [link desc 3]\n\r    (link text 3)."
+		test_content = " #{test_content} words more words <a href=\"link text 1b\">link desc 1b</a> words more words <a href=\"link text 2b\">link desc 2b</a>.\n\rwords more words <a href=\"link text 3b\">\n\r     link desc 3b</a>."
+
+		validation_tester1 = HTTPLinkFinder.new
+		test_results = validation_tester1.FindAllLinks(test_content)
+
+		puts "test_results href: #{validation_tester1.links_array_href.length} - #{validation_tester1.links_array_href}"
+		puts "test_results markdown: #{validation_tester1.links_array_mkdown.length} - #{validation_tester1.links_array_mkdown}"
+		puts "test_results combined: #{validation_tester1.links_list.length} - #{validation_tester1.links_list}"
+
+	end
+
+	def RunTest4
+		test_url = "https://docs.pivotal.io/tkgi/1-8/release-notes.html"
+
+		validation_tester1 = HTTPLinkFinder.new
+
+		validation_tester1.FindLinksInTopic(test_url)
+
+		puts "test_results href: #{validation_tester1.links_array_href.length} - #{validation_tester1.links_array_href}"
+		puts "test_results markdown: #{validation_tester1.links_array_mkdown.length} - #{validation_tester1.links_array_mkdown}"
+		puts "test_results combined: #{validation_tester1.links_list.length} - #{validation_tester1.links_list}"
+	end
+
+	def RunTest5
+
+		test_url_root = "https://docs.pivotal.io"
+		test_url = "https://docs.pivotal.io/tkgi/1-8/release-notes.html"
+
+		#validation_tester1 = HTTPLinkFinder.new
+		#validation_tester1.FindLinksInTopic(test_url)
+
+		validation_tester2 = TopicValidator.new
+		validation_tester2.ValidateTopic(test_url_root, test_url)
+
+		#puts "urls: #{validation_tester2.test_urls.length} #{validation_tester2.test_urls}"
+		#puts "descriptions: #{validation_tester2.test_url_descriptions.length} #{validation_tester2.test_url_descriptions}"
+
+	end
+
+
 
 end
 
 
 tester1 = TestHarness.new
-tester1.RunTest1
+tester1.RunTest5

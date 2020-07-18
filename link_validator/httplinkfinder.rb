@@ -6,11 +6,16 @@ class HTTPLinkFinder
 	attr_reader :skipped_folder_list
 	attr_reader :skipped_file_list
 
+	attr_reader :links_array_href
+	attr_reader :links_array_mkdown
+
 	def initialize
 		@links_list = []
 		@skipped_folder_list = []
 		@skipped_file_list = []
 
+		@links_array_href = []
+		@links_array_mkdown = []
 	end
 
 	def FindLinksInFolder(folder_path)
@@ -40,20 +45,64 @@ class HTTPLinkFinder
 
 		file_content = ReadFileContent(file_path)
 		if file_content.length > 0 then
-			file_link_list = FindAllLinks(file_content)
-			if file_link_list.length > 0 then
-				#append all items to the main links list
-				@links_list += file_link_list
-			end
+			FindAllLinks(file_content)
+			#if file_link_list.length > 0 then
+			#	#append all items to the main links list
+			#	@links_list += file_link_list
+			#end
 
 		end
 
+	end
+
+	def FindLinksInTopic(url_path)
+		#Verify file exists
+		#Open file   File.open(filename, mode="r" [, opt])
+		#If possible collapse file to single line, then check if there are any links
+		# look for links:
+		#   links can be of form <a href="http.*"> or [display text](http.*)
+		#   return all found links
+
+		file_content = ""
+		file_link_list = []
+
+		file_content = ReadFileContentFromTopic(url_path)
+		if file_content.length > 0 then
+			FindAllLinks(file_content)
+			#if file_link_list.length > 0 then
+			#	#append all items to the main links list
+			#	@links_list += file_link_list
+			#end
+
+		end
+
+	end
+
+	def ReadFileContentFromTopic(url_path)
+		uri_to_read = URI(url_path) 
+		file_content = Net::HTTP.get(uri_to_read)
+
+		revised_content = CleanUpContent(file_content)
+
+		revised_content
 	end
 
 	def ReadFileContent(file_path)
 		exists_result = File.exists?(file_path)
 		file_content_raw = []
 		file_content = ""
+
+	end
+
+	def CleanUpContent(content_raw)
+		revised_content = content_raw
+		revised_content.gsub!(/a href=/, "a^^^href=")
+		revised_content.gsub!(/\s/, "")
+		revised_content.gsub!("\n", "")
+		revised_content.gsub!("\r", "")
+		revised_content.gsub!(/a\^\^\^href=/, "a href=")
+
+		revised_content
 
 	end
 
@@ -66,15 +115,18 @@ class HTTPLinkFinder
 		# Pattern matching is more complicated if returns and spaces must be accounted for
 		# We could remove all white space before processing content
 
-		file_content_searchable = file_content
-		file_content_searchable.gsub!(/\s/, "")
-		file_content_searchable.gsub!("\n", "")
-		file_content_searchable.gsub!("\r", "")
+		file_content_searchable = CleanUpContent(file_content)
+		#file_content_searchable = file_content
+		#file_content_searchable.gsub!(/a href=/, "a^^^href=")
+		#file_content_searchable.gsub!(/\s/, "")
+		#file_content_searchable.gsub!("\n", "")
+		#file_content_searchable.gsub!("\r", "")
+		#file_content_searchable.gsub!(/a\^\^\^href=/, "a href=")
 
-		link_pattern_a = /<a href="([^\"]*)">[^<]*<\/a>/
-		link_pattern_b = /\[.*\]\(([^\)]*)\)/
+		link_pattern_a = /<a href="([^\"]*)">([^<]*)<\/a>/
+		link_pattern_b = /\[([^\]]*)\]\(([^\)]*)\)/
 
-		link_pattern_c = /<a href="([^\"]*)">[^<]*<\/a>|\[.*\]\(([^\)]*)\)/
+		link_pattern_c = /<a href="([^\"]*)">[^<]*<\/a>|\[([^\]]*)\]\(([^\)]*)\)/
 
 		#links_array_raw = file_content_searchable.scan(link_pattern_c)
 		#links_array = CreateUsableLinksList(links_array_raw)
@@ -87,7 +139,13 @@ class HTTPLinkFinder
 		links_array_a = file_content_searchable.scan(link_pattern_a)
 		links_array_b = file_content_searchable.scan(link_pattern_b)
 
-		links_array = links_array_a.concat(links_array_b)
+		#links_array = links_array_a.concat(links_array_b)
+
+		@links_array_href += links_array_a
+		@links_array_mkdown += links_array_b
+
+		@links_list += links_array_a
+		@links_list += links_array_b
 
 	end
 
